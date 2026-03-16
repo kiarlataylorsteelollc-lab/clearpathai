@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearPath AI — CMMC 2.0 Compliance for Federal Contractors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0B1F3A;
+    --navy-mid: #122748;
+    --navy-light: #1A3560;
+    --navy-bright: #1E4080;
+    --gold: #C8921A;
+    --gold-light: #E8A820;
+    --gold-bright: #F5BC30;
+    --gold-pale: #FDE9A8;
+    --red: #B82020;
+    --red-bright: #D42828;
+    --white: #FFFFFF;
+    --off-white: #F4F1E8;
+    --text-on-navy: #EAE6DC;
+    --text-muted-navy: #8FA8C8;
+    --border-navy: #1E3A5F;
+    --border-gold: #6B4A0E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--off-white);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 2rem;
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--navy);
+    border-bottom: 3px solid var(--gold);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo-accent { color: var(--gold-bright); }
+  .nav-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    border: 1px solid var(--border-gold);
+    padding: 0.15rem 0.5rem;
+    margin-left: 0.3rem;
+    animation: badgePulse 2s infinite;
+  }
+  @keyframes badgePulse {
+    0%, 100% { border-color: var(--border-gold); }
+    50% { border-color: var(--gold-bright); box-shadow: 0 0 8px rgba(245,188,48,0.3); }
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted-navy);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--gold-bright); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.4rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--gold-bright); transform: translateY(-1px); }
+
+  /* ── ALERT BANNER ── */
+  .alert-banner {
+    margin-top: 68px;
+    background: var(--red);
+    padding: 0.75rem 2rem;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .alert-dot {
+    width: 8px; height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 5rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--gold) 50%, var(--red) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .hero-stripe {
+    position: absolute; top: 0; right: 0;
+    width: 45%; height: 100%;
+    background: repeating-linear-gradient(
+      -55deg, transparent, transparent 40px,
+      rgba(200,146,26,0.05) 40px, rgba(200,146,26,0.05) 80px
+    );
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,146,26,0.06) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 390px;
+    gap: 5rem;
+    align-items: start;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease 0.2s forwards;
+  }
+  .hero-eyebrow-line { width: 36px; height: 2px; background: var(--gold); }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease 0.35s forwards;
+  }
+  h1 .gold { color: var(--gold-bright); }
+  h1 .red { color: #E85050; }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted-navy);
+    line-height: 1.8;
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease 0.5s forwards;
+  }
+  .hero-sub strong { color: var(--text-on-navy); font-weight: 500; }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-navy);
+    border-bottom: 1px solid var(--border-navy);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease 0.65s forwards;
+  }
+  .stat-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: var(--gold-bright);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted-navy);
+    margin-top: 0.2rem;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── WAITLIST CARD ── */
+  .waitlist-card {
+    background: var(--white);
+    border-top: 4px solid var(--gold);
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    opacity: 0;
+    animation: fadeInRight 0.7s ease 0.5s forwards;
+    position: relative;
+  }
+  .waitlist-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(200,146,26,0.2);
+    pointer-events: none;
+  }
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .waitlist-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .waitlist-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+  .waitlist-card .sub {
+    font-size: 0.83rem;
+    color: #777;
+    margin-bottom: 1.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .form-group { margin-bottom: 0.9rem; }
+  .form-group label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.35rem;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    background: #F8F6F0;
+    border: 1.5px solid #DDD8CC;
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.65rem 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,146,26,0.1);
+  }
+  .submit-btn {
+    width: 100%;
+    background: var(--navy);
+    color: var(--gold-bright);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.9rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s, transform 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .submit-btn:hover { background: var(--navy-bright); transform: translateY(-1px); }
+  .submit-btn:hover::after { transform: translateX(100%); }
+
+  .form-disclaimer {
+    font-size: 0.68rem;
+    color: #999;
+    text-align: center;
+    margin-top: 0.75rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem 0;
+  }
+  .check-box {
+    width: 52px; height: 52px;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.4rem;
+    color: var(--gold-bright);
+    font-weight: 700;
+    font-family: 'Barlow Condensed', sans-serif;
+    animation: scaleIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .form-success h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .form-success p {
+    font-size: 0.83rem;
+    color: #666;
+    line-height: 1.7;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── TICKER ── */
+  .ticker-bar {
+    background: var(--gold);
+    padding: 0.6rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-inner:hover { animation-play-state: paused; }
+  .ticker-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    padding: 0 2.5rem;
+  }
+  .ticker-sep {
+    color: var(--navy);
+    opacity: 0.4;
+    font-size: 0.8rem;
+    padding: 0 0.5rem;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION SHARED ── */
+  .section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 28px; height: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--navy);
+    margin-bottom: 0.8rem;
+  }
+  h2 .gold { color: var(--gold); }
+  .section-desc {
+    font-size: 1rem;
+    color: #556;
+    max-width: 580px;
+    line-height: 1.75;
+  }
+
+  /* ── PROBLEM ── */
+  .problem-section { background: var(--navy); }
+  .problem-section h2 { color: var(--white); }
+  .problem-section .section-label { color: var(--gold-bright); }
+  .problem-section .section-label::before { background: var(--gold-bright); }
+  .problem-section .section-desc { color: var(--text-muted-navy); }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .problem-card {
+    background: var(--navy-light);
+    border: 1px solid var(--border-navy);
+    border-top: 3px solid var(--gold);
+    padding: 2rem;
+    transition: transform 0.25s, box-shadow 0.25s, border-top-color 0.25s;
+    cursor: default;
+  }
+  .problem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    border-top-color: var(--gold-bright);
+  }
+  .problem-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--border-navy);
+    margin-bottom: 1rem;
+    transition: color 0.25s;
+  }
+  .problem-card:hover .problem-num { color: var(--navy-bright); }
+  .problem-card h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--gold-bright);
+    margin-bottom: 0.7rem;
+    line-height: 1.2;
+  }
+  .problem-card p { font-size: 0.88rem; color: var(--text-muted-navy); line-height: 1.7; }
+
+  /* ── FOUNDER ── */
+  .founder-section { background: var(--off-white); }
+  .founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+  .founder-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    line-height: 1.3;
+    color: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .founder-body { font-size: 0.95rem; color: #445; line-height: 1.8; margin-bottom: 1.2rem; }
+  .founder-body strong { color: var(--navy); font-weight: 500; }
+  .cert-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    background: var(--navy);
+    color: var(--gold-bright);
+    border: 1px solid var(--gold);
+    transition: background 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .badge:hover { background: var(--gold); color: var(--navy); }
+
+  /* ── CONTRACT TRACK ── */
+  .contract-track {
+    background: var(--navy);
+    padding: 1.5rem;
+    border-top: 4px solid var(--gold);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+  .contract-track h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-navy);
+  }
+  .contract-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border-navy);
+    transition: background 0.15s;
+  }
+  .contract-item:hover { background: rgba(255,255,255,0.03); margin: 0 -1.5rem; padding: 0.55rem 1.5rem; }
+  .contract-item:last-of-type { border-bottom: none; }
+  .contract-agency { font-size: 0.83rem; color: var(--text-on-navy); font-weight: 400; }
+  .contract-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--gold-bright);
+    font-weight: 500;
+  }
+  .contract-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    border-top: 2px solid var(--gold);
+  }
+  .contract-total span:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted-navy);
+  }
+  .contract-total span:last-child {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--gold-bright);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── OFFERS ── */
+  .offers-section { background: var(--white); }
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .offer-card {
+    background: var(--off-white);
+    border: 1.5px solid #DDD8CC;
+    padding: 2rem;
+    position: relative;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .offer-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.12); transform: translateY(-4px); }
+  .offer-card.featured {
+    background: var(--navy);
+    border: none;
+    border-top: 4px solid var(--gold-bright);
+  }
+  .offer-card.featured:hover { box-shadow: 0 16px 50px rgba(0,0,0,0.4); }
+  .featured-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .offer-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.7rem;
+  }
+  .offer-card.featured .offer-type { color: var(--text-muted-navy); }
+  .offer-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+  .offer-card.featured h3 { color: var(--white); }
+  .offer-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .offer-card.featured .offer-price { color: var(--gold-bright); }
+  .offer-price-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: #999;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+    margin-top: 0.2rem;
+  }
+  .offer-card.featured .offer-price-note { color: var(--text-muted-navy); }
+  .offer-divider { height: 1px; background: #DDD8CC; margin: 1.5rem 0; }
+  .offer-card.featured .offer-divider { background: var(--border-navy); }
+  .offer-includes h5 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.8rem;
+  }
+  .offer-card.featured .offer-includes h5 { color: var(--text-muted-navy); }
+  .offer-list { list-style: none; }
+  .offer-list li {
+    font-size: 0.87rem;
+    color: #445;
+    padding: 0.3rem 0;
+    padding-left: 1.3rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .offer-card.featured .offer-list li { color: var(--text-muted-navy); }
+  .offer-list li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-size: 0.65rem;
+    top: 0.4rem;
+  }
+  .offer-delivery {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #DDD8CC;
+  }
+  .offer-card.featured .offer-delivery { color: var(--text-muted-navy); border-top-color: var(--border-navy); }
+  .offer-cta {
+    display: block;
+    margin-top: 1.5rem;
+    text-align: center;
+    background: transparent;
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .offer-cta:hover { background: var(--navy); color: var(--gold-bright); }
+  .offer-card.featured .offer-cta {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+  }
+  .offer-card.featured .offer-cta:hover { background: var(--gold-bright); border-color: var(--gold-bright); }
+
+  /* ── URGENCY ── */
+  .urgency-section { background: var(--red); padding: 4.5rem 2rem; position: relative; overflow: hidden; }
+  .urgency-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 30px,
+      rgba(0,0,0,0.03) 30px, rgba(0,0,0,0.03) 60px
+    );
+  }
+  .urgency-inner { max-width: 780px; margin: 0 auto; text-align: center; position: relative; }
+  .urgency-inner .section-label { justify-content: center; color: rgba(255,255,255,0.7); font-size: 0.65rem; }
+  .urgency-inner .section-label::before { background: rgba(255,255,255,0.4); }
+  .urgency-inner h2 { color: #fff; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.2rem; }
+  .urgency-inner p { color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.8; margin-bottom: 2rem; }
+  .urgency-btn {
+    display: inline-block;
+    background: var(--gold-bright);
+    color: var(--navy);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.9rem 2.5rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .urgency-btn:hover { background: var(--white); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy); padding: 3rem 2rem; border-top: 3px solid var(--gold); }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: 0.06em; color: var(--white); }
+  .footer-logo span { color: var(--gold-bright); }
+  .footer-powered { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted-navy); margin-top: 0.3rem; }
+  .footer-certs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .footer-cert { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border: 1px solid var(--border-navy); color: var(--text-muted-navy); }
+  .footer-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--text-muted-navy); line-height: 1.8; text-align: right; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .offers-grid { grid-template-columns: 1fr; }
+    .founder-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .nav-links { display: none; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo">
+    Clear<span class="nav-logo-accent">Path</span> AI
+    <span class="nav-badge">Launching Mar 30</span>
+  </div>
+  <div class="nav-links">
+    <a href="#problem" class="nav-link">The Problem</a>
+    <a href="#founder" class="nav-link">About</a>
+    <a href="#offers" class="nav-link">Services</a>
+    <a href="#waitlist" class="nav-cta">Join the Waitlist</a>
+  </div>
+</nav>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <div class="alert-dot"></div>
+  CMMC 2.0 Enforcement is LIVE — DoD contractors must comply now or risk contract loss
+  <div class="alert-dot"></div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">CMMC 2.0 Now Enforced</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">NIST AI RMF Compliance Required</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">DoD Contractors at Risk</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Founding Access — March 30, 2026</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">WOSB · 8(a) · HUBZone Certified</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">$14M+ in Federal Contracts</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">TSA · Army Corps · GSA · Moody AFB</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Built by a Practitioner. Not a Law Firm.</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">CMMC 2.0 Now Enforced</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">NIST AI RMF Compliance Required</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">DoD Contractors at Risk</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Founding Access — March 30, 2026</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">WOSB · 8(a) · HUBZone Certified</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">$14M+ in Federal Contracts</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">TSA · Army Corps · GSA · Moody AFB</span><span class="ticker-sep">·</span>
+    <span class="ticker-item">Built by a Practitioner. Not a Law Firm.</span><span class="ticker-sep">·</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        AI Governance Compliance — Built for Small Business Federal Contractors
+      </div>
+      <h1>
+        CMMC 2.0<br>
+        is <span class="gold">law.</span><br>
+        <span style="font-size:0.72em; color:#8FA8C8; font-weight:600;">Are you compliant?</span>
+      </h1>
+      <p class="hero-sub">
+        AI governance is now a <strong>contract requirement</strong>. Small contractors are being screened out — not for bad work, but for missing documentation. ClearPath AI is built <strong>by a small business federal contractor, for small business federal contractors.</strong> A practitioner. Not a law firm.
+      </p>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val" data-count="14" data-suffix="M+">$14M+</div>
+          <div class="stat-label">Federal Contracts Won</div>
+        </div>
+        <div>
+          <div class="stat-val">15 Yrs</div>
+          <div class="stat-label">In Federal Markets</div>
+        </div>
+        <div>
+          <div class="stat-val">10+</div>
+          <div class="stat-label">Agency Clients</div>
+        </div>
+        <div>
+          <div class="stat-val">Mar 30</div>
+          <div class="stat-label">Public Launch</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WAITLIST CARD -->
+    <div class="waitlist-card" id="waitlist">
+      <div class="waitlist-label">Founding Access — Limited Spots</div>
+      <h3>Join the Waitlist</h3>
+      <p class="sub">Launching March 30, 2026 · Founding rates locked at signup</p>
+      <form id="waitlist-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label>Business Email</label>
+          <input type="email" name="email" placeholder="you@company.com" required>
+        </div>
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" name="company" placeholder="Your business name" required>
+        </div>
+        <div class="form-group">
+          <label>Currently Bidding on DoD Contracts?</label>
+          <select name="dod" required>
+            <option value="" disabled selected>Select an answer</option>
+            <option value="yes-active">Yes — I have active DoD contracts</option>
+            <option value="yes-bidding">Yes — I'm actively bidding</option>
+            <option value="no-planning">Not yet — planning to start</option>
+            <option value="no-other">No — other federal contracts</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Reserve My Founding Spot →</button>
+        <p class="form-disclaimer">No spam. Launch details only. Unsubscribe anytime.</p>
+      </form>
+      <div class="form-success" id="form-success">
+        <div class="check-box">✓</div>
+        <h4>You're on the list.</h4>
+        <p>We'll reach out before March 30 with founding access details and your CMMC readiness next steps.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="section problem-section" id="problem">
+  <div class="section-inner">
+    <div class="section-label reveal">The Problem</div>
+    <h2 class="reveal reveal-delay-1" style="color:var(--white);">Three ways small businesses<br>are <span style="color:var(--gold-bright);">losing contracts</span> right now</h2>
+    <p class="section-desc reveal reveal-delay-2" style="color:var(--text-muted-navy); margin-top:0.8rem;">CMMC 2.0 is not coming — it's already here. These are the gaps killing small contractor opportunities every week.</p>
+    <div class="problem-grid">
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-num">01</div>
+        <h4>No AI Governance Documentation</h4>
+        <p>NIST AI RMF alignment and AI policy docs are now required for DoD contracts. Most small contractors don't have them and don't know where to start.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-num">02</div>
+        <h4>CMMC 2.0 Compliance Gaps</h4>
+        <p>Level 2 enforcement is live. Third-party assessments ramp through 2026. Contractors without documented readiness are being screened out before review.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-num">03</div>
+        <h4>Wrong Advisors, Wrong Price</h4>
+        <p>Law firms charge $25K+ and don't understand small business operations. Big consulting firms aren't built for you — ClearPath AI is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="section founder-section" id="founder">
+  <div class="section-inner">
+    <div class="section-label reveal">Why ClearPath AI</div>
+    <div class="founder-grid">
+      <div>
+        <blockquote class="founder-quote reveal reveal-delay-1">
+          "I built this compliance stack from scratch as a small business owner. Now I'm handing you the key."
+        </blockquote>
+        <p class="founder-body reveal reveal-delay-2">
+          I'm Rhonda Taylor, CEO of Steelo LLC — a <strong>certified small business federal contractor</strong> with over $14 million in awarded federal and government contracts across TSA, the Army Corps of Engineers, GSA, Moody Air Force Base, Lambert Airport, and more.
+        </p>
+        <p class="founder-body reveal reveal-delay-3">
+          When CMMC 2.0 dropped, I navigated it myself. I built the AI governance documentation, the NIST alignment framework, the policy stack — all of it. I realized <strong>most small contractors have no idea this exists, let alone how to build it.</strong>
+        </p>
+        <p class="founder-body reveal reveal-delay-4">
+          ClearPath AI is what I wish I had when I started. A practitioner-built, contractor-tested compliance system for small businesses. <strong>Not a law firm. Not a big consulting firm.</strong> Someone who has actually been in the market with you.
+        </p>
+        <div class="cert-badges reveal">
+          <span class="badge">WOSB</span>
+          <span class="badge">8(a)</span>
+          <span class="badge">HUBZone</span>
+          <span class="badge">SDB</span>
+          <span class="badge">CAGE 641Y3</span>
+          <span class="badge">EPA Certified</span>
+          <span class="badge">CIMS-GB</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="contract-track">
+          <h4>Federal Contract Track Record — $14,081,899+ Documented</h4>
+          <div class="contract-item"><span class="contract-agency">TSA — Lambert Intl Airport</span><span class="contract-value">$2,500,000</span></div>
+          <div class="contract-item"><span class="contract-agency">St. Louis County — Public Health</span><span class="contract-value">$2,750,000</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Corps — St. Louis/Great Rivers</span><span class="contract-value">$2,200,000</span></div>
+          <div class="contract-item"><span class="contract-agency">GSA — Frank Carlson Federal Building</span><span class="contract-value">$2,200,000</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Corps — Great Rivers Museum</span><span class="contract-value">$1,700,000</span></div>
+          <div class="contract-item"><span class="contract-agency">Moody Air Force Base — Georgia</span><span class="contract-value">$702,000</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Corps — Walla Walla District</span><span class="contract-value">$600,000</span></div>
+          <div class="contract-item"><span class="contract-agency">Construction Projects</span><span class="contract-value">$400,000</span></div>
+          <div class="contract-item"><span class="contract-agency">Lambert Airport Windows — Icon (6 yrs)</span><span class="contract-value">$330,000</span></div>
+          <div class="contract-item"><span class="contract-agency">St. Louis County — Hwy Traffic & Control</span><span class="contract-value">$177,000</span></div>
+          <div class="contract-item"><span class="contract-agency">Lambert Airport Grounds — 285 acres</span><span class="contract-value">$132,000</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Reserves — Lawncare</span><span class="contract-value">$131,598</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Reserves — Grounds (18 acres)</span><span class="contract-value">$108,000</span></div>
+          <div class="contract-item"><span class="contract-agency">USACE — Lower Granite Lock & Dam</span><span class="contract-value">$107,000</span></div>
+          <div class="contract-item"><span class="contract-agency">St. Louis County — 6 Locations</span><span class="contract-value">$66,099</span></div>
+          <div class="contract-item"><span class="contract-agency">Bi-State Development / Metro Transit</span><span class="contract-value">$55,840</span></div>
+          <div class="contract-item"><span class="contract-agency">Tarlton / WashU · Microsoft · BJC</span><span class="contract-value">$50,410</span></div>
+          <div class="contract-item"><span class="contract-agency">US Army Reserves — St. Louis</span><span class="contract-value">$25,000</span></div>
+          <div class="contract-item"><span class="contract-agency">US Coast Guard</span><span class="contract-value">$20,952</span></div>
+          <div class="contract-item"><span class="contract-agency">St. Louis Community College</span><span class="contract-value">$15,000</span></div>
+          <div class="contract-item"><span class="contract-agency">Eagle Global — Grounds</span><span class="contract-value">$10,000</span></div>
+          <div class="contract-total">
+            <span>Total Documented</span>
+            <span>$14,081,899+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFERS -->
+<section class="section offers-section" id="offers">
+  <div class="section-inner">
+    <div class="section-label reveal">Services</div>
+    <h2 class="reveal reveal-delay-1">Three ways to get<br><span class="gold">CMMC compliant</span> fast</h2>
+    <p class="section-desc reveal reveal-delay-2" style="margin-top:0.8rem;">Built for small businesses of all certifications. Join the waitlist to lock founding rates before March 30.</p>
+    <div class="offers-grid">
+      <div class="offer-card reveal reveal-delay-1">
+        <div class="offer-type">Offer 01 — Starter</div>
+        <h3>AI Governance Compliance Starter Package</h3>
+        <div class="offer-price">$2,500</div>
+        <div class="offer-price-note">Flat fee · 5 business day delivery</div>
+        <div class="offer-divider"></div>
+        <div class="offer-includes">
+          <h5>What's Included</h5>
+          <ul class="offer-list">
+            <li>CMMC 2.0 readiness checklist</li>
+            <li>AI policy documentation template</li>
+            <li>NIST AI RMF alignment guide</li>
+            <li>60-minute strategy call with Rhonda</li>
+          </ul>
+        </div>
+        <div class="offer-delivery">Best for: Just received a CMMC requirement</div>
+        <a href="#waitlist" class="offer-cta">Get Started →</a>
+      </div>
+
+      <div class="offer-card featured reveal reveal-delay-2">
+        <div class="featured-tag">Most Popular</div>
+        <div class="offer-type">Offer 02 — Ongoing</div>
+        <h3>Compliance Monitoring Retainer</h3>
+        <div class="offer-price">$997<span style="font-size:1rem;font-weight:500;color:var(--text-muted-navy);">/mo</span></div>
+        <div class="offer-price-note">Monthly · Cancel anytime</div>
+        <div class="offer-divider"></div>
+        <div class="offer-includes">
+          <h5>What's Included</h5>
+          <ul class="offer-list">
+            <li>Monthly AI policy updates</li>
+            <li>Compliance monitoring alerts</li>
+            <li>Two strategy calls per month</li>
+            <li>Bid-ready AI documentation package</li>
+          </ul>
+        </div>
+        <div class="offer-delivery">Best for: Active or upcoming DoD contracts</div>
+        <a href="#waitlist" class="offer-cta">Reserve Your Spot →</a>
+      </div>
+
+      <div class="offer-card reveal reveal-delay-3">
+        <div class="offer-type">Offer 03 — Done For You</div>
+        <h3>AI Governance Full Stack Audit</h3>
+        <div class="offer-price">$5K–$7.5K</div>
+        <div class="offer-price-note">Scoped to your stack · 10 business days</div>
+        <div class="offer-divider"></div>
+        <div class="offer-includes">
+          <h5>What's Included</h5>
+          <ul class="offer-list">
+            <li>Full AI tool audit across your stack</li>
+            <li>CUI risk assessment</li>
+            <li>Detailed gap report with findings</li>
+            <li>90-day remediation roadmap</li>
+          </ul>
+        </div>
+        <div class="offer-delivery">Best for: Upcoming assessments or audits</div>
+        <a href="#waitlist" class="offer-cta">Apply Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- URGENCY -->
+<div class="urgency-section">
+  <div class="urgency-inner">
+    <div class="section-label reveal" style="justify-content:center; color:rgba(255,255,255,0.6);">
+      <span style="width:24px;height:1px;background:rgba(255,255,255,0.4);display:block;"></span>
+      Act Now
+    </div>
+    <h2 class="reveal reveal-delay-1" style="color:#fff;">The window is closing.<br>CMMC Level 2 is enforced now.</h2>
+    <p class="reveal reveal-delay-2">Third-party assessments are ramping through 2026. Full enforcement is 2028. Every month you wait is another month your competitors are getting compliant and getting the contracts. Join the waitlist now and lock founding rates.</p>
+    <a href="#waitlist" class="urgency-btn reveal reveal-delay-3">Reserve My Founding Spot →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Clear<span>Path</span> AI</div>
+      <div class="footer-powered">A Steelo LLC Brand · CAGE 641Y3</div>
+      <div class="footer-certs" style="margin-top:0.8rem;">
+        <span class="footer-cert">WOSB</span>
+        <span class="footer-cert">8(a)</span>
+        <span class="footer-cert">HUBZone</span>
+        <span class="footer-cert">SDB</span>
+        <span class="footer-cert">EPA Certified</span>
+      </div>
+    </div>
+    <div class="footer-meta">
+      Florissant, Missouri<br>
+      information@steelollc.com<br>
+      Launching March 30, 2026
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── NAV SCROLL SHADOW ──
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── FORM SUBMIT ──
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    const data = {
+      name: this.querySelector('[name="name"]').value,
+      email: this.querySelector('[name="email"]').value,
+      company: this.querySelector('[name="company"]').value,
+      dod: this.querySelector('[name="dod"]').value
+    };
+
+    // ── CONNECT YOUR GHL WEBHOOK URL HERE ──
+    const GHL_WEBHOOK_URL = 'YOUR_GHL_WEBHOOK_URL_HERE';
+
+    try {
+      if (GHL_WEBHOOK_URL !== 'YOUR_GHL_WEBHOOK_URL_HERE') {
+        await fetch(GHL_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
+    } catch(err) { console.log('Webhook error:', err); }
+
+    // Show success
+    this.style.display = 'none';
+    const success = document.getElementById('form-success');
+    success.style.display = 'block';
+  });
+</script>
+</body>
+</html>
